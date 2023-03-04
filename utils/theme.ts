@@ -35,10 +35,12 @@ export let theme = createTheme({
       defaultProps: {
         variant: "outlined",
         color: "secondary",
+
         sx: {
           border: "2px solid",
           ":hover": {
-            border: "4px solid ",
+            color: "#FFF8DC",
+            border: "2px solid",
           },
         },
       },
