@@ -64,7 +64,9 @@ export let theme = createTheme({
     },
     MuiStack: {
       defaultProps: {
-        justifyContent: "space-between",
+        justifyContent: "center",
+        direction: "row",
+        height: "100%",
         alignItems: "center",
       },
     },
@@ -89,6 +91,20 @@ export let theme = createTheme({
         root: {
           color: "#FDFEFE",
         },
+      },
+    },
+    MuiIcon: {
+      defaultProps: {
+        fontSize: "large",
+        color: "primary",
+        sx: {
+          ":hover": {
+            color: "#F7DC6F",
+          },
+        },
+      },
+      styleOverrides: {
+        root: {},
       },
     },
   },

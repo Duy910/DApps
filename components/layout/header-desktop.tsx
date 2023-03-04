@@ -25,7 +25,7 @@ export default function HeaderDesktop(props: HeaderDesktopProps) {
       height={60}
     >
       <Container>
-        <Stack direction="row" height="100%">
+        <Stack justifyContent="space-between">
           <Box>
             <Link href="/">
               <Image alt="" src={logo} width={140} height={60} />
