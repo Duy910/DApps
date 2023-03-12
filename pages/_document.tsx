@@ -9,7 +9,7 @@ import Document, {
 } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace";
-import { theme, createEmotionCache, chakra_petch } from "@/utils/index";
+import { theme, createEmotionCache } from "@/utils/index";
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: EmotionJSX.Element[];
@@ -17,11 +17,12 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en" className={chakra_petch.className}>
+    <Html lang="en">
       <Head>
         {/* PWA primary color */}
         <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
+
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>

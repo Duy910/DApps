@@ -8,6 +8,8 @@ import { theme, createEmotionCache } from "@/utils/index";
 import { NextPage } from "next";
 import { LayoutProps, NextPageWithLayout } from "@/models/index";
 import Empty from "@/components/empty";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -29,6 +31,7 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Layout>
+          <ToastContainer position="top-right" autoClose={3000} closeOnClick />
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>

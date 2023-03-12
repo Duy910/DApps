@@ -16,10 +16,10 @@ export const path1 = [
 export const path2 = [
   {
     name: "SIGN IN",
-    path: "/signIn",
+    path: "#",
   },
   {
     name: "SING UP",
-    path: "/signUp",
+    path: "#",
   },
 ];

@@ -1,4 +1,4 @@
-import { Roboto, Chakra_Petch } from "next/font/google";
+import { Roboto, Chakra_Petch } from "@next/font/google";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import { useRouter } from "next/router";
@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 export const chakra_petch = Chakra_Petch({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
-  display: "swap",
+  display: "fallback",
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 

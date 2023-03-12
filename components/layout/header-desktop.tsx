@@ -47,7 +47,7 @@ export default function HeaderDesktop(props: HeaderDesktopProps) {
           </Box>
           <Box>
             {path2.map((item) => (
-              <Link legacyBehavior key={item.path} href={item.path}>
+              <Link legacyBehavior key={item.name} href={item.path}>
                 <MuiLink px={2}>
                   <Button>{item.name}</Button>
                 </MuiLink>

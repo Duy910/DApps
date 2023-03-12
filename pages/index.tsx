@@ -1,20 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "next/font/google";
+
 import { Main } from "@/components/index";
 import { Box, Paper, Typography } from "@mui/material";
 import { Container, Grid, Stack, Button, Link as MuiLink } from "@mui/material";
 import bg from "@/public/main-img.png";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   return (
     <Paper>
       <Container>
         <Grid container>
-          <Grid xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Stack justifyContent="flex-start">
               <Box>
                 <Typography
@@ -38,7 +36,7 @@ export default function Home() {
               </Box>
             </Stack>
           </Grid>
-          <Grid xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Stack>
               <Image src={bg} alt="" style={{ width: "100%", height: "90%" }} />
             </Stack>
