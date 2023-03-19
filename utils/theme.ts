@@ -24,7 +24,7 @@ export let theme = createTheme({
       main: red.A400,
     },
     info: {
-      main: "#1c214e",
+      main: "#1a1441",
     },
   },
   typography: {
@@ -46,7 +46,12 @@ export let theme = createTheme({
       },
 
       styleOverrides: {
-        root: {},
+        root: {
+          ":disabled": {
+            color: "#FFF8DC",
+            border: "2px solid",
+          },
+        },
       },
     },
     MuiLink: {
@@ -81,7 +86,7 @@ export let theme = createTheme({
       styleOverrides: {
         root: {
           background:
-            "linear-gradient( -144deg, rgb(38,45,88) 5%, rgb(43,46,104) 35%, rgb(22,30,75) 65%, rgb(29,34,79) 95%)",
+            "linear-gradient(141deg, rgba(11,11,11,0.9220938375350141) 0%, rgba(5,2,62,1) 13%, rgba(15,15,73,1) 72%, rgba(77,67,11,1) 100%)",
           minHeight: "100vh",
           borderRadius: "0",
         },

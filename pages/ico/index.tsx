@@ -9,19 +9,38 @@ import {
   Button,
 } from "@mui/material";
 import * as React from "react";
-import ico from "@/public/ico.avif";
-import Image from "next/image";
 import ButtonConnect from "./button-connect";
 import WalletInfo from "./wallet-info";
 import { ethers } from "ethers";
-import { WalletInfoProps } from "@/models/index";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { PackageIcoProps, Rate, TOKEN, WalletInfoProps } from "@/models/index";
+import InvestCard from "./invest-card";
+import { Packages } from "@/utils/index";
+import Image from "next/image";
+import CrowdSaleContract from "@/contracts/crowdSaleContract";
+import UsdtContract from "@/contracts/usdtContract";
+import ModalTxHash from "./modal-txhash";
 
 export default function ICO() {
   const [wallet, setWallet] = React.useState<WalletInfoProps>();
-  const [wev3Provider, setWeb3Provider] =
+  const [rate, setRate] = React.useState<Rate>({ bnbRate: 0, usdtRate: 0 });
+  const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
+  const [pak, setPak] = React.useState<PackageIcoProps>();
+  const [txHash, setTxHash] = React.useState<string>();
+  const [openTxHash, setOpenTxHash] = React.useState(true);
+
+  const [web3Provider, setWeb3Provider] =
     React.useState<ethers.providers.Web3Provider>();
+
+  const getRate = React.useCallback(async () => {
+    const crowdContract = new CrowdSaleContract();
+    const bnbRate = await crowdContract.getBnbRate();
+    const usdtRate = await crowdContract.getUsdtRate();
+    setRate({ bnbRate, usdtRate });
+  }, []);
+
+  React.useEffect(() => {
+    getRate();
+  }, [getRate]);
   const handleConnectWallet = async () => {
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(
@@ -37,26 +56,54 @@ export default function ICO() {
       setWeb3Provider(provider);
     }
   };
-  // const showSuccess = () => {
-  //   toast.success("Success Notification !", {
-  //     position: toast.POSITION.TOP_CENTER,
-  //   });
-  // };
-  // if (wallet?.address) {
-  //   showSuccess();
-  // } else {
-  //   toast.error("Success Notification !", {
-  //     position: toast.POSITION.TOP_CENTER,
-  //   });
-  // }
+  const handleBuyIco = async (item: PackageIcoProps) => {
+    console.log(item);
+    if (web3Provider) {
+      setPak(item);
+      setIsProcessing(true);
+      let hash = "";
+      const crowdContract = new CrowdSaleContract(web3Provider);
+      if (item.token == TOKEN.USDT) {
+        const usdtContract = new UsdtContract(web3Provider);
+        await usdtContract.approve(
+          crowdContract._contractAddress,
+          item.amount / rate.usdtRate
+        );
+        hash = await crowdContract.buyTokenByUSDT(item.amount);
+      } else {
+        hash = await crowdContract.buyTokenByBNB(item.amount);
+      }
+      setTxHash(hash);
+
+      try {
+      } catch (er: any) {}
+      setPak(undefined);
+      setIsProcessing(false);
+    }
+  };
+
+  const handleOpen = () => setOpenTxHash(true);
+  const handleClose = () => setOpenTxHash(false);
 
   return (
     <Paper>
       <Container>
         <Box
           pt={4}
-          sx={{ display: "flex", justifyContent: "flex-end", mr: "16px" }}
+          sx={{ display: "flex", justifyContent: "flex-end", mr: "1rem" }}
         >
+          {txHash ? (
+            <Box mr={2}>
+              <Button onClick={handleOpen}>Transaction</Button>
+              <ModalTxHash
+                onClose={handleClose}
+                txHash={openTxHash}
+                hash={txHash}
+              />
+            </Box>
+          ) : (
+            ""
+          )}
           <Box onClick={handleConnectWallet}>
             {!wallet && <ButtonConnect />}
             {wallet && (
@@ -66,28 +113,18 @@ export default function ICO() {
         </Box>
         <Box sx={{ flexGrow: 1 }} py={10}>
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Box
-                sx={{
-                  height: "500px",
-                  border: "1px solid #F7DC6F ",
-                  borderRadius: "10px",
-                  overflow: "hidden",
+            {Packages.map((item, index) => (
+              <InvestCard
+                pak={item}
+                key={String(index)}
+                isBuying={isProcessing && pak?.key === item.key}
+                rate={item.token === TOKEN.BNB ? rate.bnbRate : rate.usdtRate}
+                walletInfo={wallet}
+                onBuy={() => {
+                  handleBuyIco(item);
                 }}
-              >
-                <Image
-                  src={ico}
-                  alt=""
-                  style={{
-                    borderRadius: "10px",
-                    backgroundSize: "cover",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "70%",
-                  }}
-                />
-              </Box>
-            </Grid>
+              />
+            ))}
           </Grid>
         </Box>
       </Container>

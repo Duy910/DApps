@@ -18,7 +18,8 @@
       "@/utils*": ["./utils*"],
       "@/components*": ["./components*"],
       "@/models*": ["./models*"],
-      "@/public*": ["./public*"]
+      "@/public*": ["./public*"],
+      "@/contracts*": ["./contracts*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

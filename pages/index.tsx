@@ -6,6 +6,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { Container, Grid, Stack, Button, Link as MuiLink } from "@mui/material";
 import bg from "@/public/main-img.png";
 import Link from "next/link";
+import Promo from "@/components/promo";
 
 export default function Home() {
   return (
@@ -42,6 +43,7 @@ export default function Home() {
             </Stack>
           </Grid>
         </Grid>
+        <Promo />
       </Container>
     </Paper>
   );
