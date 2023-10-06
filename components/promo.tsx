@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export default function Promo() {
   return (
-    <Box sx={{ paddingY: "200px" }}>
+    <Box sx={{ paddingY: "200px", overflow: "hidden" }}>
       <Box
         height={120}
         bgcolor="info.main"

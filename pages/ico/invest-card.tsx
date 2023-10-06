@@ -15,6 +15,7 @@ export default function InvestCard({
     <Grid key={pak.key} xs={12} sm={6} lg={3} p={2}>
       <Box
         sx={{
+          marginLeft: "32px",
           height: "500px",
           border: "1px solid #F7DC6F ",
           borderRadius: "10px",
