@@ -9,8 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import * as React from "react";
-import ButtonConnect from "./button-connect";
-import WalletInfo from "./wallet-info";
+
+import WalletInfo from "../../components/common/wallet-info";
 import { ethers } from "ethers";
 import { PackageIcoProps, Rate, TOKEN, WalletInfoProps } from "@/models/index";
 import InvestCard from "./invest-card";
@@ -19,6 +19,7 @@ import Image from "next/image";
 import CrowdSaleContract from "@/contracts/crowdSaleContract";
 import UsdtContract from "@/contracts/usdtContract";
 import ModalTxHash from "./modal-txhash";
+import Context from "../../global/context";
 
 export default function ICO() {
   const [wallet, setWallet] = React.useState<WalletInfoProps>();
@@ -27,9 +28,7 @@ export default function ICO() {
   const [pak, setPak] = React.useState<PackageIcoProps>();
   const [txHash, setTxHash] = React.useState<string>();
   const [openTxHash, setOpenTxHash] = React.useState(true);
-
-  const [web3Provider, setWeb3Provider] =
-    React.useState<ethers.providers.Web3Provider>();
+  const [initState, dispatch] = React.useContext<any>(Context);
 
   const getRate = React.useCallback(async () => {
     const crowdContract = new CrowdSaleContract();
@@ -41,30 +40,16 @@ export default function ICO() {
   React.useEffect(() => {
     getRate();
   }, [getRate]);
-  const handleConnectWallet = async () => {
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum,
-        undefined
-      );
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const myAddress = await signer.getAddress();
-      const myBalance = await signer.getBalance();
-      const bnbBalance = Number(ethers.utils.formatEther(myBalance));
-      setWallet({ address: myAddress, bnb: bnbBalance });
-      setWeb3Provider(provider);
-    }
-  };
+
   const handleBuyIco = async (item: PackageIcoProps) => {
     console.log(item);
-    if (web3Provider) {
+    if (initState.provider) {
       setPak(item);
       setIsProcessing(true);
       let hash = "";
-      const crowdContract = new CrowdSaleContract(web3Provider);
+      const crowdContract = new CrowdSaleContract(initState.provider);
       if (item.token == TOKEN.USDT) {
-        const usdtContract = new UsdtContract(web3Provider);
+        const usdtContract = new UsdtContract(initState.provider);
         await usdtContract.approve(
           crowdContract._contractAddress,
           item.amount / rate.usdtRate
@@ -88,7 +73,7 @@ export default function ICO() {
   return (
     <Paper>
       <Container>
-        <Box
+        {/* <Box
           pt={4}
           sx={{ display: "flex", justifyContent: "flex-end", mr: "1rem" }}
         >
@@ -104,13 +89,7 @@ export default function ICO() {
           ) : (
             ""
           )}
-          <Box onClick={handleConnectWallet}>
-            {!wallet && <ButtonConnect />}
-            {wallet && (
-              <WalletInfo address={wallet?.address} bnb={wallet?.bnb} />
-            )}
-          </Box>
-        </Box>
+        </Box> */}
         <Box sx={{ flexGrow: 1 }} py={10}>
           <Grid container spacing={4}>
             {Packages.map((item, index) => (
@@ -119,7 +98,7 @@ export default function ICO() {
                 key={String(index)}
                 isBuying={isProcessing && pak?.key === item.key}
                 rate={item.token === TOKEN.BNB ? rate.bnbRate : rate.usdtRate}
-                walletInfo={wallet}
+                walletInfo={initState.wallet}
                 onBuy={() => {
                   handleBuyIco(item);
                 }}

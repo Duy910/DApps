@@ -7,10 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { path1, path2 } from "@/utils/index";
+import { path1 } from "@/utils/index";
 import * as React from "react";
 import Image from "next/image";
 import logo from "@/public/main-logo.png";
+import WalletConnect from "../common/wallet-connect";
 
 import { useRouter } from "next/router";
 
@@ -45,7 +46,8 @@ export default function HeaderDesktop(props: HeaderDesktopProps) {
               </Link>
             ))}
           </Box>
-          <Box>
+          <WalletConnect></WalletConnect>
+          {/* <Box>
             {path2.map((item) => (
               <Link legacyBehavior key={item.name} href={item.path}>
                 <MuiLink px={2}>
@@ -53,7 +55,7 @@ export default function HeaderDesktop(props: HeaderDesktopProps) {
                 </MuiLink>
               </Link>
             ))}
-          </Box>
+          </Box> */}
         </Stack>
       </Container>
     </Box>

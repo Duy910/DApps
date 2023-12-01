@@ -81,7 +81,7 @@ export default function InvestCard({
                   color: "#000",
                 },
               }}
-              disabled={!walletInfo?.address || isBuying}
+              disabled={!walletInfo || isBuying}
               onClick={onBuy}
             >
               {isBuying ? "is BUYING" : " BUY NOW"}
