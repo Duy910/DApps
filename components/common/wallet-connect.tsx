@@ -24,6 +24,7 @@ export default function WalletConnect(props: IWalletConnectProps) {
   };
 
   const handleDisConnectWallet = async () => {
+    dispatch(actions.setWallet(""));
     setWallet("");
   };
 
@@ -35,8 +36,41 @@ export default function WalletConnect(props: IWalletConnectProps) {
     );
   } else {
     return (
-      <Box>
+      <Box sx={{ position: "relative" }} className="wallet">
         <WalletInfo address={initState.wallet} bnb={balance}></WalletInfo>
+        <Box
+          sx={{
+            "::before": {
+              content: '""',
+              display: "block",
+              backgroundColor: "transparent",
+              position: "absolute",
+              width: "100%",
+              height: "1em",
+            },
+          }}
+        ></Box>
+        <Button
+          onClick={handleDisConnectWallet}
+          className="walletConnect"
+          sx={{
+            position: "absolute",
+            top: "129%",
+            right: 0,
+            left: 0,
+            mx: "auto",
+            width: "80%",
+            zIndex: 10,
+
+            ":hover": {
+              border: "2px solid ",
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+          }}
+        >
+          Disconnect
+        </Button>
       </Box>
     );
   }

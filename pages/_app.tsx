@@ -11,6 +11,8 @@ import Empty from "@/components/empty";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Provider from "../global/provider";
+import "../css/walletconnect.css";
+
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

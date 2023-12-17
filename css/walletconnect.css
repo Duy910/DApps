@@ -1,0 +1,7 @@
+.walletConnect {
+  display: none;
+}
+.wallet:hover .walletConnect {
+  display: block;
+  
+}

@@ -59,3 +59,13 @@ export interface ModalTxHashProps {
   txHash: boolean;
   hash?: string;
 }
+
+export interface ModalMintProps {
+  onClose: () => void;
+  open: boolean;
+}
+
+export interface NFTListProps {
+  list: [];
+  key: number;
+}

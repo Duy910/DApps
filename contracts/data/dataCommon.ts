@@ -31,4 +31,9 @@ export const SMART_ADDRESS = {
     97: "0xCddde9860610035871b01Af6F5dd0D27DEa5390d",
     56: "",
   },
+
+  NFT: {
+    97: "0xedc687E48457c4C69Fe960583440B4aDF2096a06",
+    56: "",
+  },
 };

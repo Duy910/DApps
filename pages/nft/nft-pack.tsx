@@ -1,18 +1,16 @@
-import { InvestCardProps, numberFormatAmount } from "@/models/index";
+import {
+  InvestCardProps,
+  NFTListProps,
+  numberFormatAmount,
+} from "@/models/index";
 import { Packages } from "@/utils/index";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import Image from "next/image";
 import * as React from "react";
 
-export default function InvestCard({
-  pak,
-  isBuying,
-  rate,
-  onBuy,
-  walletInfo,
-}: InvestCardProps) {
+export default function NFTCards({ list }: NFTListProps) {
   return (
-    <Grid key={pak.key} xs={12} sm={6} lg={3} p={2}>
+    <Grid xs={12} sm={6} lg={3} p={2}>
       <Box
         sx={{
           marginLeft: "32px",
@@ -35,13 +33,13 @@ export default function InvestCard({
         >
           <Image
             alt=""
-            src={`/${pak.img}`}
+            src={`/nft/${Number(list) % 6}.png`}
             layout="fill"
             objectFit="cover"
             style={{ borderRadius: "0  0 18px 18px" }}
           />
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -58,7 +56,7 @@ export default function InvestCard({
             <Box
               fontWeight={100}
               mr={1}
-              fontStyle="italic"  
+              fontStyle="italic"
               color="primary.main"
             >
               Price with BNB:
@@ -87,7 +85,7 @@ export default function InvestCard({
               {isBuying ? "is BUYING" : " BUY NOW"}
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Grid>
   );

@@ -73,7 +73,7 @@ export default function ICO() {
   return (
     <Paper>
       <Container>
-        {/* <Box
+        <Box
           pt={4}
           sx={{ display: "flex", justifyContent: "flex-end", mr: "1rem" }}
         >
@@ -89,7 +89,7 @@ export default function ICO() {
           ) : (
             ""
           )}
-        </Box> */}
+        </Box>
         <Box sx={{ flexGrow: 1 }} py={10}>
           <Grid container spacing={4}>
             {Packages.map((item, index) => (

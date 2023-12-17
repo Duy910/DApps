@@ -11,6 +11,7 @@ import createEmotionServer from "@emotion/server/create-instance";
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 import { theme, createEmotionCache } from "@/utils/index";
 
+
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: EmotionJSX.Element[];
 }
