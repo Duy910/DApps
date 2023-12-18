@@ -11,7 +11,7 @@ import {
 import * as React from "react";
 import ico from "@/public/ico.avif";
 import Image from "next/image";
-import NFTCard from "./nft-pack";
+import NFTCard from "./nft-owner";
 import MintNFT from "./mint-nft";
 import ModalMint from "./modal-mint";
 import NFTFilter from "./nft-filters";
