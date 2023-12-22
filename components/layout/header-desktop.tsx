@@ -21,7 +21,7 @@ export default function HeaderDesktop(props: HeaderDesktopProps) {
   const route = useRouter();
   return (
     <Box
-      display={{ xs: "none", md: "block" }}
+      display={{ xs: "none", sm: "block" }}
       sx={{ backgroundColor: "info.main" }}
       height={60}
     >

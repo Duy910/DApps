@@ -1,19 +1,21 @@
 import { Box, Button } from "@mui/material";
 import * as React from "react";
 import Context from "../../global/context";
+import * as actions from "../../global/action";
 import { ethers } from "ethers";
 import { getNFTAbi } from "@/contracts/data/getAbis";
 import { getNFTAddress } from "@/contracts/data/getAddress";
 import abiNFT from "../../contracts/abis/nft.json";
 import Web3 from "web3";
 import { getAddress } from "ethers/lib/utils";
-import * as actions from "../../global/action";
+import ModalMint from "./modal-mint";
 
 export interface IMintNFTProps {}
 
 export default function MintNFT(props: IMintNFTProps) {
   const [initState, dispatch] = React.useContext<any>(Context);
   const [account, setAccount] = React.useState<string>("");
+  const [openModal, setOpenModal] = React.useState<any>(false);
 
   const handleMintNFT = async () => {
     console.log(initState.wallet);
@@ -33,6 +35,7 @@ export default function MintNFT(props: IMintNFTProps) {
       const mint = await contract.mint();
       const receipt = await mint.wait();
       dispatch(actions.setMint(mint.hash));
+      setOpenModal(mint);
     } catch (error: any) {
       console.error("Error :", error.message || error);
     }
@@ -46,6 +49,8 @@ export default function MintNFT(props: IMintNFTProps) {
     //     console.log(error);
     //   });
   };
+
+  const handleClose = () => setOpenModal(false);
 
   return (
     <Box
@@ -62,6 +67,7 @@ export default function MintNFT(props: IMintNFTProps) {
       <Button disabled={!initState.wallet} onClick={handleMintNFT} sx={{}}>
         Mint NFT
       </Button>
+      <ModalMint onClose={handleClose} open={openModal}></ModalMint>
     </Box>
   );
 }

@@ -18,7 +18,7 @@ export interface HeaderMobileProps {}
 export default function HeaderMobile(props: HeaderMobileProps) {
   return (
     <Box
-      display={{ xs: "block", md: "none" }}
+      display={{ xs: "block", sm: "none" }}
       sx={{ backgroundColor: "info.main" }}
       height={60}
     >

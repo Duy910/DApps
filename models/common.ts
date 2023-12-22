@@ -69,3 +69,20 @@ export interface NFTListProps {
   list: [];
   key: number;
 }
+
+export interface NFTp2pProps {
+  list: [];
+  key: number;
+}
+
+export interface ModalListProps {
+  onClose: () => void;
+  open: boolean;
+  // processing: boolean;
+  // havePrice: boolean;
+}
+export interface ModalTransferProps {
+  onClose: () => void;
+  open: boolean;
+  list: Object;
+}

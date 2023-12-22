@@ -13,6 +13,7 @@ import {
 } from "@/contracts/data/getAddress";
 import { getNFTAbi, getNFT_FEATUREAbi } from "@/contracts/data/getAbis";
 import NFTListed from "./nft-listed";
+import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,6 +53,7 @@ export default function NFTFilter() {
   const [initState, dispatch] = React.useContext<any>(Context);
   const [listNFT, setListNFT] = React.useState<any>([]);
   const [listedNFT, setListedNFT] = React.useState<any>([]);
+  const [listedNFTUser, setListedNFTUser] = React.useState<any>([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -63,12 +65,19 @@ export default function NFTFilter() {
     } else {
       const getNFT = async () => {
         if (initState.provider && window.ethereum) {
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-
+          const provider = await new ethers.providers.Web3Provider(
+            window.ethereum
+          );
+          const account = await provider.send("eth_requestAccounts", []);
           const signer = await provider.getSigner();
           const contract = await new ethers.Contract(
             getNFTAddress(),
             getNFTAbi(),
+            signer
+          );
+          const contract_NFTFeature = await new ethers.Contract(
+            getNFT_FEATUREAddress(),
+            getNFT_FEATUREAbi(),
             signer
           );
 
@@ -81,17 +90,44 @@ export default function NFTFilter() {
             .catch((error: any) => {
               console.log("error", error);
             });
+        }
+      };
+      getNFT();
+    }
+  }, [
+    initState.mint,
+    initState.wallet,
+    initState.list,
+    initState.doneTransfer,
+    initState.unList,
+  ]);
+  React.useEffect(() => {
+    if (!initState.wallet) {
+      setListNFT("");
+    } else {
+      const getNFT = async () => {
+        if (initState.provider && window.ethereum) {
+          const provider = await new ethers.providers.Web3Provider(
+            window.ethereum
+          );
+          const account = await provider.send("eth_requestAccounts", []);
+          const signer = await provider.getSigner();
+          const contract = await new ethers.Contract(
+            getNFTAddress(),
+            getNFTAbi(),
+            signer
+          );
           const contract_NFTFeature = await new ethers.Contract(
             getNFT_FEATUREAddress(),
             getNFT_FEATUREAbi(),
             signer
           );
 
-          const getNFTList = await contract_NFTFeature
-            .getListedNft()
+          const getNFTList = contract_NFTFeature
+            .getListNftUser(account[0])
             .then((result: any) => {
               console.log("result", result);
-              setListedNFT(result);
+              setListedNFTUser(result);
             })
             .catch((error: any) => {
               console.log("error", error);
@@ -100,8 +136,13 @@ export default function NFTFilter() {
       };
       getNFT();
     }
-  }, [initState.mint, initState.wallet, initState.list]);
-
+  }, [
+    initState.mint,
+    initState.wallet,
+    initState.list,
+    initState.doneTransfer,
+    initState.unList,
+  ]);
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "yellow" }}>
@@ -133,11 +174,11 @@ export default function NFTFilter() {
         <Box sx={{ mt: "2rem" }}>
           {initState.wallet == "" ? (
             <Typography>Connect your wallet to access the listing!</Typography>
-          ) : listedNFT == "" ? (
-            <Typography>We don't have any NFT for listing. </Typography>
+          ) : listedNFTUser == "" ? (
+            <Typography>You don't have any NFT for listing. </Typography>
           ) : (
             <Grid container spacing={4}>
-              {listedNFT?.map((item: any, index: any) => {
+              {listedNFTUser?.map((item: any, index: any) => {
                 return <NFTListed key={index} list={item}></NFTListed>;
               })}
             </Grid>

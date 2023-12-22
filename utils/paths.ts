@@ -12,6 +12,14 @@ export const path1 = [
     name: "NFT",
     path: "/nft",
   },
+  {
+    name: "P2P",
+    path: "/nft/p2p",
+  },
+  {
+    name: "AUCTION",
+    path: "/nft/auction",
+  },
 ];
 export const path2 = [
   {

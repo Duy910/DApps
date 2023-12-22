@@ -1,6 +1,7 @@
 import { Box, Button, Typography, Grid } from "@mui/material";
 import * as React from "react";
 import Context from "../../global/context";
+import * as actions from "../../global/action";
 import {
   getNFTAddress,
   getNFT_FEATUREAddress,
@@ -15,7 +16,6 @@ export default function NFTListed({ list }: NFTListProps) {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const [listedNFT, setListedNFT] = React.useState<any>(list);
 
-  console.log("listed nft item", listedNFT);
   const signer = provider.getSigner();
 
   var contractNFT = new ethers.Contract(getNFTAddress(), getNFTAbi(), signer);
@@ -25,7 +25,12 @@ export default function NFTListed({ list }: NFTListProps) {
     signer
   );
 
-  const handleBuyNFT = () => {};
+  const handleUnListNFT = async () => {
+    const unList = await contractNftFeature.unlistNft(listedNFT.tokenId);
+    const listed = await unList.wait();
+    dispatch(actions.setUnList(unList.hash));
+    
+  };
 
   const handleAuction = async () => {};
   return (
@@ -83,7 +88,7 @@ export default function NFTListed({ list }: NFTListProps) {
             }}
           >
             <Box>
-              <Button onClick={handleBuyNFT}>BUY NOW</Button>
+              <Button onClick={handleUnListNFT}>UNLIST</Button>
             </Box>
           </Box>
         </Box>

@@ -3,5 +3,16 @@
 }
 .wallet:hover .walletConnect {
   display: block;
-  
+}
+.priceList {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.inputList {
+  height: 2rem;
+}
+
+.buttonList:active .modalList {
+  display: none;
 }

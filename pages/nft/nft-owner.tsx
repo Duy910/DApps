@@ -18,9 +18,15 @@ import { getAddress } from "ethers/lib/utils";
 import { transactionBuilder } from "web3/lib/commonjs/eth.exports";
 
 import * as actions from "../../global/action";
+import ModalList from "./modal-list";
+import ModalTransfer from "./modal-transfer";
 
 export default function NFTOwner({ list, key }: NFTListProps) {
   const [initState, dispatch] = React.useContext<any>(Context);
+  const [openModal, setOpenModal] = React.useState<any>();
+  const [processingTransfer, setProcessingTransfer] = React.useState<any>();
+  const [closeTransfer, setCloseTransfer] = React.useState<any>();
+
   const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const signer = provider.getSigner();
@@ -31,32 +37,43 @@ export default function NFTOwner({ list, key }: NFTListProps) {
     getNFT_FEATUREAbi(),
     signer
   );
-
+  if (openModal) {
+    // setOpenModal(false);
+  }
   const handleListNFT = async () => {
-    const amount = 10000;
-    const Approve = await contractNFT.approve(getNFT_FEATUREAddress(), list);
+    await setOpenModal(true);
+    await dispatch(actions.setProcessing(false));
 
-    // console.log("Transaction sent:", Approve);
-    const receipt = await Approve.wait();
-    // console.log("receipt", receipt);
-    const listNFT = await contractNftFeature.listNft(list, 1);
-    const listed = await listNFT.wait();
-    dispatch(actions.setMint(listNFT.hash));
+    const setListNFT = async () => {
+      const Approve = await contractNFT.approve(getNFT_FEATUREAddress(), list);
+      // console.log("Transaction sent:", Approve);
+      const receipt = await Approve.wait();
+      // console.log("receipt", receipt);
+      const listNFT = await contractNftFeature.listNft(
+        list,
+        Number(initState.price)
+      );
+      const listed = await listNFT.wait();
+      dispatch(actions.setList(listNFT.hash));
+      console.log("function execute");
+    };
+    setListNFT();
   };
 
-  const handleTransferNFT = async () => {
-    await contractNFT
-      .transferFrom(
-        initState.wallet,
-        "0x7Be112A5B4245E568A45148a1226844b1ec1e6Fd",
-        list
-      )
-      .then((result: string) => {
-        console.log(result);
-      })
-      .catch((err: string) => {
-        console.log(err);
-      });
+  const handleClose = () => {
+    setOpenModal(false);
+    dispatch(actions.setProcessing(false));
+    dispatch(actions.setHavePrice(false));
+  };
+
+  const handleTransferNFT = () => {
+    setCloseTransfer(true);
+  };
+
+  const handleCloseTransfer = () => {
+    setCloseTransfer(false);
+    dispatch(actions.setProcessing(false));
+    dispatch(actions.setDoneTransfer(""));
   };
 
   const handleAuction = async () => {};
@@ -113,14 +130,20 @@ export default function NFTOwner({ list, key }: NFTListProps) {
           >
             <Box>
               <Button onClick={handleListNFT}>List NFT</Button>
+              <ModalList onClose={handleClose} open={openModal}></ModalList>
             </Box>
             <Box>
               <Button onClick={handleAuction}>Auction</Button>
             </Box>
           </Box>
           <Box sx={{ my: "1rem" }}>
-            <Box sx={{}}>
+            <Box>
               <Button onClick={handleTransferNFT}>Transfer</Button>
+              <ModalTransfer
+                onClose={handleCloseTransfer}
+                open={closeTransfer}
+                list={list}
+              ></ModalTransfer>
             </Box>
           </Box>
         </Box>

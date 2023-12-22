@@ -34,6 +34,7 @@ export default function ModalMint({ onClose, open }: ModalMintProps) {
           id="modal-modal-title"
           variant="h6"
           component="h2"
+          color="#66ff66"
         >
           Successfully Mint !!
         </Typography>
